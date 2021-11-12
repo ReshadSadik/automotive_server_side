@@ -42,6 +42,26 @@ async function run() {
 
       res.json(result);
     });
+
+    // get single user orders
+    app.get('/orders/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const cursor = ordersCollection.find(query);
+      const result = await cursor.toArray();
+
+      res.json(result);
+    });
+
+    // check is admin
+    app.get('/users/admin/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+
+      res.json(user);
+    });
+
     // get all reviews
     app.get('/reviews', async (req, res) => {
       const cursor = reviewsCollection.find({});
