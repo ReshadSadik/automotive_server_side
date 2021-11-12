@@ -4,8 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId;
-// const { initializeApp } = require('firebase-admin/app');
-// const admin = require('firebase-admin');
+
 require('dotenv').config();
 
 app.use(cors());
@@ -40,6 +39,30 @@ async function run() {
       const cursor = ordersCollection.find({});
       const result = await cursor.toArray();
 
+      res.json(result);
+    });
+
+    // add a product
+
+    app.post('/products', async (req, res) => {
+      const data = req.body;
+      const result = await productsCollection.insertOne(data);
+
+      res.json(result);
+    });
+
+    // update order status
+
+    app.put('/orders/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+
+      const updateDoc = {
+        $set: {
+          status: 'shipped',
+        },
+      };
+      const result = await ordersCollection.updateOne(filter, updateDoc);
       res.json(result);
     });
 
@@ -132,11 +155,18 @@ async function run() {
       res.json(result);
     });
 
-    // remove a product
-    app.delete('/products/:id', async (req, res) => {
+    // remove an order
+    app.delete('/orders/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await ordersCollection.deleteOne(query);
+      res.json(result);
+    });
+    // remove an product
+    app.delete('/products/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await productsCollection.deleteOne(query);
       res.json(result);
     });
   } catch {}
