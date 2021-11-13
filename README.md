@@ -1,0 +1,8 @@
+- used mongoDb to save products, users, reviews information in database
+- It has admin login system . An admin can make another user admin
+- admin can manage all the producs and users from the dashborad.
+- an admin can remove something if needed
+- an admin can add a new product
+- You can choose any car and quickly place order from the purchase page
+- An user can add reviews which will be showed on the homepage
+- An User can easily see and manage his orders
